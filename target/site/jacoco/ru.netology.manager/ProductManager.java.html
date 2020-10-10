@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ProductManager</a> &gt; <a href="index.source.html" class="el_package">ru.netology.manager</a> &gt; <span class="el_source">ProductManager.java</span></div><h1>ProductManager.java</h1><pre class="source lang-java linenums">package ru.netology.manager;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.netology.domain.*;
+import ru.netology.repository.ProductRepository;
+
+@NoArgsConstructor
+@Data
+public class ProductManager {
+    private ProductRepository repository = new ProductRepository();
+
+//    public ProductManager(ProductRepository repository) {
+//        this.repository = repository;
+//    }
+
+    public void add(Product item) {
+<span class="fc" id="L19">        repository.save(item);</span>
+<span class="fc" id="L20">    }</span>
+
+    public Product[] getAll() {
+<span class="fc" id="L23">        return repository.findAll();</span>
+    }
+
+    public void removeById(int id) {
+<span class="fc" id="L27">        repository.removeById(id);</span>
+<span class="fc" id="L28">    }</span>
+
+    public Product[] searchBy(String text) {
+<span class="fc" id="L31">        Product[] result = new Product[0];</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        for (Product product : repository.findAll()) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            if (matches(product, text)) {</span>
+<span class="fc" id="L34">                Product[] tmp = new Product[result.length + 1];</span>
+<span class="fc" id="L35">                System.arraycopy(result, 0, tmp, 0, result.length);</span>
+<span class="fc" id="L36">                tmp[tmp.length - 1] = product;</span>
+<span class="fc" id="L37">                result = tmp;</span>
+            }
+        }
+<span class="fc" id="L40">        return result;</span>
+    }
+    private boolean matches(Product product, String search) {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (product instanceof Book) {</span>
+<span class="fc" id="L44">            Book book = (Book) product;</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            if (book.getName().equalsIgnoreCase(search)) {</span>
+<span class="fc" id="L46">                return true;</span>
+            }
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if (book.getAuthor().equalsIgnoreCase(search)) {</span>
+<span class="fc" id="L49">                return true;</span>
+            }
+<span class="fc" id="L51">            return false;</span>
+        }
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if  (product instanceof Smartphone){</span>
+<span class="fc" id="L54">            Smartphone smartphone  = (Smartphone) product;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            if (smartphone.getName().equalsIgnoreCase(search)) {</span>
+<span class="fc" id="L56">                return  true;</span>
+            }
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (smartphone.getManufacturer().equalsIgnoreCase(search)){</span>
+<span class="fc" id="L59">                return  true;</span>
+            }
+<span class="fc" id="L61">        return  false;</span>
+        }
+<span class="fc" id="L63">        return  false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
